@@ -1,0 +1,250 @@
+{
+  "restaurants": [
+    {
+      "id": "cm0zo7rsr000770zxzvmlfish",
+      "name": "Josna Ristorante Indiano",
+      "image": [
+        "/images/restaurants/josna/1.jpg",
+        "/images/restaurants/josna/2.jpg",
+        "/images/restaurants/josna/3.jpg",
+        "/images/restaurants/josna/4.jpg"
+      ],
+      "description": "One of the best Indian restaurants in Italy; the best solution for spicy food lovers.",
+      "rating": 4.5,
+      "address": "Via di Porta Soprana, 31/R, 16123 Genova GE",
+      "location": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x12d343dd167fa705:0xa0b23ba072457e3d?sa=X&ved=1t:8290&hl=it&ictx=111",
+      "phone": "T. +39 328 868 5641",
+      "hours": "12:30-14:30 | 19:00-23:00",
+      "closed": {
+        "LUNCH": [
+          "Monday",
+          "Tuesday"
+        ],
+        "DINNER": []
+      },
+      "notes": "(Closed on Monday and Tuesday at lunch)",
+      "recommended": false,
+      "mealType": [
+        "LUNCH",
+        "DINNER"
+      ]
+    },
+    {
+      "id": "cm0zob13u000b70zxbw6i45aa",
+      "name": "E. Prie Rosse",
+      "image": [
+        "/images/restaurants/rosse/1.png",
+        "/images/restaurants/rosse/2.jpg",
+        "/images/restaurants/rosse/3.jpg",
+        "/images/restaurants/rosse/4.jpg"
+      ],
+      "recommended": false,
+      "description": "Variety of typical ligurian dishes, with particular attention to local ingredients.",
+      "rating": 4.6,
+      "address": "Via di Ravecca, 54, 16100 Genova GE",
+      "location": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x12d343dcf9344c6f:0x6af0c3579427d048?sa=X&ved=1t:8290&hl=it&ictx=111",
+      "phone": "T. +39 010 2512591",
+      "closed": {
+        "LUNCH": [],
+        "DINNER": []
+      },
+      "hours": "12:30-14:30 | 19:30-23:00",
+      "mealType": [
+        "DINNER"
+      ]
+    },
+    {
+      "id": "cm0zob13u000b70zxbw6i45aa",
+      "name": "E. Prie Rosse",
+      "image": [
+        "/images/restaurants/rosse/1.png",
+        "/images/restaurants/rosse/2.jpg",
+        "/images/restaurants/rosse/3.jpg",
+        "/images/restaurants/rosse/4.jpg"
+      ],
+      "recommended": true,
+      "description": "Variety of typical ligurian dishes, with particular attention to local ingredients.",
+      "rating": 4.6,
+      "address": "Via di Ravecca, 54, 16100 Genova GE",
+      "location": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x12d343dcf9344c6f:0x6af0c3579427d048?sa=X&ved=1t:8290&hl=it&ictx=111",
+      "phone": "T. +39 010 2512591",
+      "hours": "12:30-14:30 | 19:30-23:00",
+      "closed": {
+        "LUNCH": [],
+        "DINNER": []
+      },
+      "mealType": [
+        "LUNCH"
+      ]
+    },
+    {
+      "id": "cm0zodb8c000f70zxhky2g5j8",
+      "name": "Osteria Le Colonne",
+      "image": [
+        "/images/restaurants/colonne/1.jpg",
+        "/images/restaurants/colonne/2.jpg"
+      ],
+      "recommended": true,
+      "description": "L’osteria Le Colonne is a must-visit restaurant for those that want to taste the typical Ligurian dishes such as the “ravioli al tuccu”.",
+      "rating": 4.7,
+      "address": "Piazza Invrea 3R, 16129, Genova Italia",
+      "location": "https://www.google.com/maps/place//data=!4m2!3m1!1s0x12d3430f0a916357:0x5fbcc0affd114875?sa=X&ved=1t:8290&ictx=111",
+      "phone": "T. +39 010 292 7649",
+      "hours": "12:15-14:30 | 19:15-22:30",
+      "closed": {
+        "LUNCH": [],
+        "DINNER": []
+      },
+      "mealType": [
+        "DINNER"
+      ]
+    },
+    {
+      "id": "cm0zodb8c000f70zxhky2g5j8",
+      "name": "Osteria Le Colonne",
+      "image": [
+        "/images/restaurants/colonne/1.jpg",
+        "/images/restaurants/colonne/2.jpg"
+      ],
+      "recommended": false,
+      "description": "L’osteria Le Colonne is a must-visit restaurant for those that want to taste the typical Ligurian dishes such as the “ravioli al tuccu”.",
+      "rating": 4.7,
+      "address": "Piazza Invrea 3R, 16129, Genova Italia",
+      "location": "https://www.google.com/maps/place//data=!4m2!3m1!1s0x12d3430f0a916357:0x5fbcc0affd114875?sa=X&ved=1t:8290&ictx=111",
+      "phone": "T. +39 010 292 7649",
+      "hours": "12:15-14:30 | 19:15-22:30",
+      "closed": {
+        "LUNCH": [],
+        "DINNER": []
+      },
+      "mealType": [
+        "LUNCH"
+      ]
+    },
+    {
+      "id": "cm0zoop35000n70zxduqcx0e2",
+      "name": "Broadside Sushi Genova",
+      "image": [
+        "/images/restaurants/sushi/1.jpg",
+        "/images/restaurants/sushi/2.jpg"
+      ],
+      "recommended": false,
+      "description": "Innovative high quality Sushi restaurant.",
+      "rating": 4.8,
+      "address": "Via 12 Ottobre, 27, 16121, Genova Italia",
+      "location": "https://www.google.com/maps/place//data=!4m2!3m1!1s0x12d343e840be04f1:0x5546b7ef3f653e07?sa=X&ved=1t:8290&ictx=111",
+      "phone": "T. +39 340 6201419",
+      "hours": "12:00-17:00 | 19:00-23:59",
+      "closed": {
+        "LUNCH": [],
+        "DINNER": []
+      },
+      "mealType": [
+        "DINNER"
+      ]
+    },
+    {
+      "id": "cm128pcnm0001h95vnons5h1a",
+      "name": "I.L.Caffè Barroero",
+      "image": [
+        "/images/restaurants/breakfast/pas.png"
+      ],
+      "recommended": false,
+      "description": "A charming traditional Italian café known for its excellent coffee, baked products and the typical focaccia genovese.",
+      "rating": 4.4,
+      "address": "16123 Genoa, Metropolitan City of Genoa, Italy",
+      "location": "https://maps.app.goo.gl/2ovwVPSGRxdWGemR7",
+      "phone": "",
+      "hours": "7:00 – 20.00 (Closed on Sundays)",
+      "mealType": [
+        "BREAKFAST"
+      ]
+    },
+    {
+      "id": "cm1292cpg0003z82avwfok8pc",
+      "name": "TAZZE PAZZE Specialty Coffee",
+      "image": [
+        "/images/restaurants/breakfast/pizz.jpg"
+      ],
+      "recommended": true,
+      "description": "International coffee shop, specialty coffee, sweet / salty bakery products for breakfast and brunch.",
+      "rating": 4.7,
+      "address": "Via di Canneto il Lungo 54 r, 16123 Genova GE, Italy",
+      "location": "https://maps.app.goo.gl/1gdTVpX7y3Cnthvx8",
+      "phone": "T. +39  349 126 5103",
+      "hours": "8.00 – 17.30 ",
+      "mealType": [
+        "BREAKFAST"
+      ]
+    },
+    {
+      "id": "cm1293j7g0001p7pak1918bye",
+      "name": "Douce Pâtisserie Cafè",
+      "image": [
+        "/images/restaurants/breakfast/patt.jpg"
+      ],
+      "recommended": false,
+      "description": "Elegant French-inspired patisserie and café offering exquisite pastries and fine coffee.",
+      "rating": 4.6,
+      "address": "Piazza Giacomo Matteotti, 84R ",
+      "location": "https://maps.app.goo.gl/eaeaWHaDqqFEzeibA",
+      "phone": "T. +39 010 553 7166",
+      "hours": "7.30 – 21.30 ",
+      "mealType": [
+        "BREAKFAST"
+      ]
+    },
+    {
+      "id": "cm1293jsn0003p7pa5a2oglvu",
+      "name": "Giano Bifronte Bistrot",
+      "image": [
+        "/images/restaurants/app/1.png"
+      ],
+      "description": "A touch of Genoa in the city, for an authentic and refined happy hour experience.",
+      "rating": 4.5,
+      "address": "Piazza delle Erbe, 19-21 R, 16123 Genova GE",
+      "location": "https://www.google.it/maps/place/data=!4m2!3m1!1s0x12d343dda0fc8c4b:0x8955f91e749a4404?sa=X&ved=1t:8290&hl=it-it&ictx=111",
+      "phone": "T. +39 348 148 5731",
+      "hours": "18.00 – 01.00",
+      "mealType": [
+        "APPETIZER"
+      ],
+      "recommended": true
+    },
+    {
+      "id": "cm1293k6r0005p7pano9n96up",
+      "name": "N9ve Ristorante Evoluto",
+      "image": [
+        "/images/restaurants/app/N.jpg"
+      ],
+      "recommended": false,
+      "description": "Located right next to the historic submarine Narario Sauro.Enjoy a blend of Ligurian flavors and maritime charm as you sip on expertly crafted cocktails and savor delicious local bites.",
+      "rating": 4.7,
+      "address": "Calata Andalò di Negro, 9, 16126 Genova GE",
+      "location": "https://www.google.it/maps/place/data=!4m2!3m1!1s0x12d34130d930135d:0xa00263644a9d0539?sa=X&ved=1t:8290&hl=it-it&ictx=111",
+      "phone": "T. +39 010 407 0264",
+      "hours": "9.30 – 22.30",
+      "mealType": [
+        "APPETIZER"
+      ]
+    },
+    {
+      "id": "cm1293kl20007p7pamy9f4mzf",
+      "name": "Maiolica caffè e bistrot",
+      "image": [
+        "/images/restaurants/app/M.jpg"
+      ],
+      "recommended": false,
+      "description": "Enjoy refined aperitifs and delicious bites in a stylish environment in the center of Genova",
+      "rating": 4.6,
+      "address": "Via S. Vincenzo, 89r, 16121 Genova GE",
+      "location": "https://www.google.com/maps/place/data=!4m2!3m1!1s0x12d343321c62b52f:0xb0ec050dfd0566c0?sa=X&ved=1t:8290&ictx=111",
+      "phone": "T. +39 010 860 8927",
+      "hours": "11.00 – 22.00",
+      "mealType": [
+        "APPETIZER"
+      ]
+    }
+   
+  ]
+}
