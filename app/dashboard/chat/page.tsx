@@ -10,9 +10,18 @@ import { AuthContext } from "@/providers/AuthProvider";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import ChatNotification from "@/components/ChatNotification";
 import { ChatNotificationDetails } from "@/lib/data";
+import { useSession } from "next-auth/react";
+// import { useRouter } from "next/navigation";
 
 export default function ChatPage() {
-  const { role } = useContext(AuthContext);
+  // const router = useRouter()
+ const { data: session, status } = useSession();
+//  if (!session || session.user.role !== 'TEACHER') {
+//   // router.push("/login")
+//   return
+// }
+const role = session?.user.role
+
 
   if(role === "TEACHER"){
   return (

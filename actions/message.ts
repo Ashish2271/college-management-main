@@ -1,3 +1,4 @@
+"use server"
 // types.ts
 import { prisma } from '@/utils/prismaDB';
 import { User, ChatTicket as PrismaChatTicket, ChatMessage as PrismaChatMessage } from '@prisma/client';
@@ -38,13 +39,56 @@ export interface ChatMessage extends PrismaChatMessage {
 
 // actions.ts
 
+// types.ts
+type ChatTicketInput = {
+  studentId: string;
+  teacherId: string;
+};
 
-export async function createChatTicket(studentId: string, teacherId: string) {
+type ChatTicketResponse = {
+  id: string;
+  studentId: string;
+  teacherId: string;
+  status: any;
+  student: {
+    email: string;
+    student: {
+      rollno: string;
+    };
+  };
+  teacher: any
+};
+
+// actions/message.ts
+
+
+export async function createChatTicket(input: ChatTicketInput): Promise<ChatTicketResponse> {
+  if (!input.studentId || !input.teacherId) {
+    throw new Error('Missing required fields');
+  }
+
   try {
+    // Verify that both student and teacher exist
+    const [student, teacher] = await Promise.all([
+      prisma.user.findUnique({
+        where: { id: input.studentId },
+        include: { student: true },
+      }),
+      prisma.user.findUnique({
+        where: { id: input.teacherId },
+        include: { teacher: true },
+      }),
+    ]);
+    console.log(student,input.teacherId)
+
+    if (!student?.student || !teacher?.teacher) {
+      throw new Error('Invalid student or teacher ID');
+    }
+
     const ticket = await prisma.chatTicket.create({
       data: {
-        studentId,
-        teacherId,
+        studentId: input.studentId,
+        teacherId: input.teacherId,
         status: 'OPEN',
       },
       include: {
@@ -71,12 +115,17 @@ export async function createChatTicket(studentId: string, teacherId: string) {
         }
       }
     });
+
     return ticket;
   } catch (error) {
     console.error('Error creating chat ticket:', error);
+    if (error instanceof Error) {
+      throw new Error(`Failed to create chat ticket: ${error.message}`);
+    }
     throw new Error('Failed to create chat ticket');
   }
 }
+
 
 export async function updateTicketStatus(
   ticketId: string,
@@ -157,6 +206,7 @@ export async function sendMessage(
 }
 
 export async function getTicketMessages(ticketId: string) {
+  console.log("hel",ticketId)
   try {
     const messages = await prisma.chatMessage.findMany({
       where: { ticketId },

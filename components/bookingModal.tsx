@@ -48,7 +48,7 @@ const BookingModal: React.FC<any> = ({ teacherId,timeSlot, onClose, onBooking}) 
               <p>Day: {['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][timeSlot.startTime.getDay()]}</p>
               <p>Time: {timeSlot.startTime.toLocaleString()} - {timeSlot.endTime.toLocaleString()}</p>
               <p>Recurring: {timeSlot.isRecurring ? 'Yes' : 'No'}</p>
-              <p>Bookings: {timeSlot.bookings.length} / {timeSlot.isRecurring ? 'Recurring' : 'One-time'}</p>
+              <p>Bookings: {timeSlot?.bookings?.length} / {timeSlot?.isRecurring ? 'Recurring' : 'One-time'}</p>
             </div>
             <div>
               <label htmlFor="reason" className="block font-medium">

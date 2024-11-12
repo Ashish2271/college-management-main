@@ -61,7 +61,7 @@ const TeacherSchedule = ({ params }) => {
                   </td>
                   <td className="p-2 border">{timeSlot.startTime.toLocaleString()} - {timeSlot.endTime.toLocaleString()}</td>
                   <td className="p-2 border">
-                    {timeSlot.bookings.length} / {timeSlot.isRecurring ? 'Recurring' : 'One-time'}
+                    {timeSlot?.bookings?.length} / {timeSlot.isRecurring ? 'Recurring' : 'One-time'}
                   </td>
                   <td className="p-2 border">
                     <Button onClick={() => handleBooking(timeSlot)}>Book</Button>

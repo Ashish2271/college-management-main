@@ -20,7 +20,7 @@ export default function ChatPage() {
   const [messages, setMessages] = useState<{ role: string; message: string }[]>(
     []
   );
-  const {name} = useContext(ChatContext);
+  const {chatName} = useContext(ChatContext);
 
   return (
     <main className="h-full  flex flex-col bg-white ">
@@ -32,7 +32,7 @@ export default function ChatPage() {
             className="overflow-y-scroll h-full w-full bg-muted mx-4 max-sm:mx-0  mt-4 max-sm:mt-0 rounded-2xl flex flex-col items-center justify-start  "
           >
             <div className="sticky top-0 w-full px-6 max-sm:px-4 max-sm:text-sm max-sm:py-2 py-4 bg-primary text-primary-foreground text-end">
-              {name.toLocaleUpperCase()}
+              {chatName.toLocaleUpperCase()}
             </div>
             <div
               className={clsx(
