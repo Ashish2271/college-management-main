@@ -4,7 +4,8 @@
 import { getServerSession } from 'next-auth';
 import { prisma } from "@/utils/prismaDB";
 import { revalidatePath } from "next/cache";
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { authOptions } from "@/utils/auth";
+
 
 
 export async function createTimeSlot(formData: FormData) {
