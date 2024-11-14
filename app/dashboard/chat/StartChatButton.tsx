@@ -46,7 +46,7 @@ export default function StartChatButton() {
         throw new Error('Invalid ticket response');
       }
 
-      router.push(`/teacher/${ticket.id}`);
+      router.push(`dashboard/chat/teacher/${ticket.id}`);
     } catch (error) {
       console.error("Error creating chat:", error);
       toast({

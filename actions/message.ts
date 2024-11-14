@@ -1,7 +1,9 @@
 "use server"
+import { authOptions } from '@/utils/auth';
 // types.ts
 import { prisma } from '@/utils/prismaDB';
 import { User, ChatTicket as PrismaChatTicket, ChatMessage as PrismaChatMessage } from '@prisma/client';
+import { getServerSession } from 'next-auth';
 
 export type TicketStatus = 'OPEN' | 'IN_PROGRESS' | 'CLOSED';
 
@@ -236,7 +238,16 @@ export async function getTicketMessages(ticketId: string) {
   }
 }
 
-export async function getTeacherTickets(teacherId: string) {
+export async function getTeacherTickets() {
+  const session = await getServerSession(authOptions)
+  if (!session?.user?.email) throw new Error('Unauthorized')
+
+  const user = await prisma.user.findUnique({
+    where: { email: session.user.email }
+  })
+
+  if (!user || user.role !== 'TEACHER') throw new Error('Unauthorized')
+const teacherId= session?.user?.id
   try {
     const tickets = await prisma.chatTicket.findMany({
       where: { teacherId },

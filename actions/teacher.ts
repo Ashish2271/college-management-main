@@ -97,3 +97,61 @@ export async function getTeacherSchedule(teacherId: string) {
       throw new Error('Failed to create booking')
     }
   }
+
+
+
+
+
+export async function getTeacherChats() {
+  const session = await getServerSession(authOptions)
+  if (!session?.user?.email) throw new Error('Unauthorized')
+
+  const user = await prisma.user.findUnique({
+    where: { email: session.user.email }
+  })
+
+  if (!user || user.role !== 'TEACHER') throw new Error('Unauthorized')
+
+  const chats = await prisma.chatTicket.findMany({
+    where: {
+      teacherId: user.id,
+    },
+    include: {
+      student: {
+        include: {
+          student: true,
+        },
+      },
+      messages: {
+        orderBy: {
+          createdAt: 'desc',
+        },
+        take: 1,
+      },
+      _count: {
+        select: {
+          messages: {
+            where: {
+              senderRole: 'STUDENT',
+              createdAt: {
+                gt: new Date(Date.now() - 24 * 60 * 60 * 1000), // Last 24 hours
+              },
+            },
+          },
+        },
+      },
+    },
+    orderBy: {
+      updatedAt: 'desc',
+    },
+  })
+
+  return chats.map(chat => ({
+    id: chat.id,
+    studentName: chat.student.student?.rollno || 'Unknown Student',
+    lastMessage: chat.messages[0]?.content || 'No messages yet',
+    status: chat.status,
+    timestamp: chat.updatedAt.toLocaleString(),
+    unreadCount: chat._count.messages,
+  }))
+}
