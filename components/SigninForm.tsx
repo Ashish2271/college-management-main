@@ -5,10 +5,11 @@ import { signIn } from 'next-auth/react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-
+import { useRouter } from 'next/navigation';
 import { Eye, EyeOff } from 'lucide-react';
 
 const SignInForm = () => {
+  const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -26,11 +27,13 @@ const SignInForm = () => {
         email,
         password,
       });
-console.log("faaaaaa",result)
+
       if (result?.error) {
         setError(result.error);
-      } else {
-        // NextAuth will handle the redirect on successful sign-in
+      } else if (result?.ok) {
+        // Redirect to the dashboard on successful sign-in
+        router.push('/dashboard/timetable');
+        router.refresh(); // Refresh the page to ensure the session is updated
       }
     } catch (error) {
       setError('An error occurred. Please try again.');
@@ -48,8 +51,9 @@ console.log("faaaaaa",result)
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
             {error && (
-             <div>   {error}</div>
-         
+              <div className="p-3 text-sm text-red-500 bg-red-50 rounded-md">
+                {error}
+              </div>
             )}
             
             <div className="space-y-2">
