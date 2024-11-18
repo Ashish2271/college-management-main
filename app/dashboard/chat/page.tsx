@@ -13,24 +13,19 @@ import { ChatNotificationDetails } from "@/lib/data";
 import { useSession } from "next-auth/react";
 import { getTeacherChats } from "@/actions/teacher";
 import { getTeacherTickets } from "@/actions/message";
-// import { useRouter } from "next/navigation";
 
 export default function ChatPage() {
-  // const router = useRouter()
-
-//  if (!session || session.user.role !== 'TEACHER') {
-//   // router.push("/login")
-//   return
-// }
+ 
 
 const { data: session } = useSession()
   const [chats, setChats] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-
+  const role = session?.user?.role
   useEffect(() => {
     async function loadChats() {
       try {
+        setLoading(true)
         const chatData = await getTeacherTickets()
         console.log(chatData)
         setChats(chatData)
@@ -41,8 +36,8 @@ const { data: session } = useSession()
         setLoading(false)
       }
     }
-
-    if (session?.user) {
+   
+    if (role==="TEACHER") {
       loadChats()
     }
   }, [session])
@@ -59,7 +54,7 @@ const { data: session } = useSession()
     return <div>Error: {error}</div>
   }
 
-  const role = session?.user.role
+  
   if(role === "TEACHER"){
     return (
       <main className="p-4 pt-12 max-sm:pt-6 max-md:pb-20 max-sm:space-y-6 flex flex-col gap-4 items-center justify-center">
@@ -69,7 +64,7 @@ const { data: session } = useSession()
           </h1>
           <div className="flex flex-col items-center gap-4 w-full">
             {chats.map((chat) => (
-              
+
               <ChatNotification key={chat.id} notification={chat} />
             ))}
             {chats.length === 0 && (
@@ -80,19 +75,22 @@ const { data: session } = useSession()
       </main>
     )
   }
+  if(role === "STUDENT"){
+    return (
+      <main className="p-4 max-md:pb-20 space-y-12 max-sm:space-y-6 flex justify-center pt-24 ">
+        <div className="flex flex-col items-center gap-12">
+          <h1 className="text-5xl max-sm:text-3xl font-bold text-primary">
+            Select Department
+          </h1>
+  
+          <SelectCourse />
+          <Button>
+            <Link href="chat/selectteacher">Select Teacher</Link>
+          </Button>
+        </div>
+      </main>
+    );
+  }
 
-  return (
-    <main className="p-4 max-md:pb-20 space-y-12 max-sm:space-y-6 flex justify-center pt-24 ">
-      <div className="flex flex-col items-center gap-12">
-        <h1 className="text-5xl max-sm:text-3xl font-bold text-primary">
-          Select Department
-        </h1>
-
-        <SelectCourse />
-        <Button>
-          <Link href="chat/selectteacher">Select Teacher</Link>
-        </Button>
-      </div>
-    </main>
-  );
+ 
 }

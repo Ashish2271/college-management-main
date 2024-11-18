@@ -8,8 +8,8 @@ import { createChatTicket } from "@/actions/message";
 import { useSession } from "next-auth/react";
 import { toast } from "@/hooks/use-toast";
 
-export default function StartChatButton() {
-  const { selectedTeacherId } = useContext(ChatContext);
+export default function StartButton({ department }: any) {
+  const { selectedTeacherId,chatName } = useContext(ChatContext);
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const { data: session } = useSession();
@@ -37,16 +37,8 @@ export default function StartChatButton() {
       setIsLoading(true);
       console.log(selectedTeacherId)
 
-      const ticket = await createChatTicket({
-        studentId: session.user.id,
-        teacherId: selectedTeacherId,
-      });
 
-      if (!ticket?.id) {
-        throw new Error('Invalid ticket response');
-      }
-
-      router.push(`teacher/${ticket.id}`);
+      router.push(`/dashboard/timetable/${department}/${chatName}/${selectedTeacherId}/schedule`);
     } catch (error) {
       console.error("Error creating chat:", error);
       toast({
@@ -65,7 +57,7 @@ export default function StartChatButton() {
       disabled={isLoading || !selectedTeacherId}
       className="w-full md:w-auto"
     >
-      {isLoading ? "Starting chat..." : "Start Chat"}
+      {isLoading ? "booking" : "book"}
     </Button>
   );
 }
