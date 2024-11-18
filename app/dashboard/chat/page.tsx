@@ -27,7 +27,7 @@ const { data: session } = useSession()
       try {
         setLoading(true)
         const chatData = await getTeacherTickets()
-        console.log(chatData)
+        console.log("wo",chatData)
         setChats(chatData)
       } catch (err) {
         setError('Failed to load chats')
@@ -65,7 +65,7 @@ const { data: session } = useSession()
           <div className="flex flex-col items-center gap-4 w-full">
             {chats.map((chat) => (
 
-              <ChatNotification key={chat.id} notification={chat} />
+              <ChatNotification key={chat.id} notificationDetails={chat} />
             ))}
             {chats.length === 0 && (
               <p className="text-gray-500">No active chats</p>
