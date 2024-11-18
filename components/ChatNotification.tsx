@@ -13,7 +13,7 @@ interface ChatNotificationProps {
   };
 }
 
-export default function ChatNotification({ notificationDetails }: ChatNotificationProps) {
+export default function ChatNotification({ notificationDetails }: any) {
   const { setChatName } = useContext(ChatContext);
 
   const handleStartChat = () => {

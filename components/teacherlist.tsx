@@ -14,7 +14,7 @@ interface TeacherChatListProps {
     useEffect(() => {
       const loadTickets = async () => {
         try {
-          const fetchedTickets = await getTeacherTickets(teacherId)
+          const fetchedTickets = await getTeacherTickets()
           setTickets(fetchedTickets)
         } catch (error) {
           console.error('Error loading tickets:', error)

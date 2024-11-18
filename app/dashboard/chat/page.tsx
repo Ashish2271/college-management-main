@@ -69,6 +69,7 @@ const { data: session } = useSession()
           </h1>
           <div className="flex flex-col items-center gap-4 w-full">
             {chats.map((chat) => (
+              
               <ChatNotification key={chat.id} notification={chat} />
             ))}
             {chats.length === 0 && (
