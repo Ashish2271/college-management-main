@@ -28,7 +28,7 @@ console.log("woow",notificationDetails)
           <AvatarFallback>SU</AvatarFallback>
         </Avatar> */}
         <div className="space-y-2">
-          <p className="text-lg font-semibold">{notificationDetails?.student.email}</p>
+          <p className="text-lg font-semibold">{notificationDetails?.student.student.name}</p>
           <p className="max-w-[600px] max-xl:max-w-[400px] max-lg:max-w-[280px] max-sm:max-w-[240px] overflow-hidden text-ellipsis whitespace-nowrap text-accent text-sm">
             {notificationDetails?.message}
           </p>

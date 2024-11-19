@@ -225,6 +225,7 @@ export async function getTicketMessages(ticketId: string) {
             },
             student: {
               select: {
+                name:true,
                 rollno: true
               }
             }
@@ -255,10 +256,11 @@ const teacherId= session?.user?.id
       include: {
         student: {
           select: {
+          
             email: true,
             student: {
               select: {
-              
+                name : true,
                 rollno: true
               }
             }
