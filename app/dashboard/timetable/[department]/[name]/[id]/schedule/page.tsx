@@ -4,32 +4,69 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import BookingModal from '@/components/bookingModal';
-import { getTeacherSchedule } from '@/actions/teacher';
+import { getTeacherSchedule } from '@/actions/timetable';
 
+const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+const HOURS = Array.from({ length: 9 }, (_, i) => i + 9); // 9 AM to 5 PM
 
-const TeacherSchedule = ({ params }) => {
-  const [timeSlots, setTimeSlots] = useState([]);
+const SlotStatus = {
+  FREE: 'FREE',
+  BUSY: 'BUSY',
+  LECTURE: 'LECTURE'
+};
+
+const getStatusColor = (status) => {
+  switch (status) {
+    case SlotStatus.FREE:
+      return 'bg-green-100 text-green-800';
+    case SlotStatus.BUSY:
+      return 'bg-red-100 text-red-800';
+    case SlotStatus.LECTURE:
+      return 'bg-blue-100 text-blue-800';
+    default:
+      return 'bg-gray-100 text-gray-800';
+  }
+};
+
+const StudentTeacherSchedule = ({ params }) => {
+  const [schedule, setSchedule] = useState({});
   const [showBookingModal, setShowBookingModal] = useState(false);
   const [selectedTimeSlot, setSelectedTimeSlot] = useState(null);
-
+const teacherId = params.id
   useEffect(() => {
     const fetchTeacherSchedule = async () => {
       try {
-        const data:any = await getTeacherSchedule(params.id)
-        
-       
-        setTimeSlots(data);
+        const timeSlots = await getTeacherSchedule(teacherId);
+        console.log(timeSlots)
+        // Transform schedule into a structured format
+        const formattedSchedule = timeSlots.reduce((acc, slot) => {
+          if (!acc[slot.dayOfWeek]) {
+            acc[slot.dayOfWeek] = {};
+          }
+          
+          const hour = new Date(slot.startTime).getHours();
+          acc[slot.dayOfWeek][hour] = {
+            ...slot,
+            status: slot.status
+          };
+          
+          return acc;
+        }, {});
+
+        setSchedule(formattedSchedule);
       } catch (error) {
         console.error('Error fetching teacher schedule:', error);
       }
     };
 
     fetchTeacherSchedule();
-  }, [params.id]);
+  }, [teacherId]);
 
   const handleBooking = (timeSlot) => {
-    setSelectedTimeSlot(timeSlot);
-    setShowBookingModal(true);
+    if (timeSlot.status === SlotStatus.FREE) {
+      setSelectedTimeSlot(timeSlot);
+      setShowBookingModal(true);
+    }
   };
 
   const handleCloseModal = () => {
@@ -38,7 +75,7 @@ const TeacherSchedule = ({ params }) => {
   };
 
   return (
-    <Card className="w-full max-w-4xl">
+    <Card className="w-full max-w-6xl mx-auto">
       <CardHeader>
         <CardTitle>Teacher Schedule</CardTitle>
       </CardHeader>
@@ -47,25 +84,40 @@ const TeacherSchedule = ({ params }) => {
           <table className="w-full border-collapse">
             <thead>
               <tr>
-                <th className="p-2 border text-left">Day</th>
                 <th className="p-2 border text-left">Time</th>
-                <th className="p-2 border text-left">Bookings</th>
-                <th className="p-2 border text-left">Action</th>
+                {DAYS.map(day => (
+                  <th key={day} className="p-2 border text-center">{day}</th>
+                ))}
               </tr>
             </thead>
             <tbody>
-              {timeSlots.map((timeSlot) => (
-                <tr key={timeSlot.id}>
-                  <td className="p-2 border">
-                    {['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][timeSlot.dayOfWeek]}
+              {HOURS.map(hour => (
+                <tr key={hour}>
+                  <td className="p-2 border font-medium">
+                    {`${hour}:00 - ${hour + 1}:00`}
                   </td>
-                  <td className="p-2 border">{timeSlot.startTime.toLocaleString()} - {timeSlot.endTime.toLocaleString()}</td>
-                  <td className="p-2 border">
-                    {timeSlot?.bookings?.length} / {timeSlot.isRecurring ? 'Recurring' : 'One-time'}
-                  </td>
-                  <td className="p-2 border">
-                    <Button onClick={() => handleBooking(timeSlot)}>Book</Button>
-                  </td>
+                  {DAYS.map((_, dayIndex) => {
+                    const timeSlot = schedule[dayIndex]?.[hour];
+                    return (
+                      <td key={`${dayIndex}-${hour}`} className="p-2 border">
+                        <div 
+                          className={`min-h-[60px] p-2 rounded ${getStatusColor(timeSlot?.status || 'FREE')} 
+                            ${timeSlot?.status === SlotStatus.FREE ? 'cursor-pointer hover:opacity-80' : ''}`}
+                          onClick={() => handleBooking(timeSlot)}
+                        >
+                          <div className="text-xs font-semibold">
+                            {timeSlot ? timeSlot.status : 'FREE'}
+                          </div>
+                          {timeSlot?.Booking && timeSlot.Booking.length > 0 && (
+                            <div className="text-xs mt-1">
+                              {/* Booked: {timeSlot.Booking.length} */}
+                              {timeSlot.Booking[0].student.name}
+                            </div>
+                          )}
+                        </div>
+                      </td>
+                    );
+                  })}
                 </tr>
               ))}
             </tbody>
@@ -74,15 +126,15 @@ const TeacherSchedule = ({ params }) => {
       </CardContent>
 
       {showBookingModal && selectedTimeSlot && (
-       <BookingModal
-       teacherId={params.id}
-       timeSlot={selectedTimeSlot}
-       onClose={handleCloseModal}
-       onBooking={handleCloseModal}
-     />
+        <BookingModal
+          teacherId={teacherId}
+          timeSlot={selectedTimeSlot}
+          onClose={handleCloseModal}
+          onBooking={handleCloseModal}
+        />
       )}
     </Card>
   );
 };
 
-export default TeacherSchedule;
+export default StudentTeacherSchedule;

@@ -25,7 +25,7 @@ async function TeachersList({ department }: TeachersListProps) {
   return (
     <div className="flex flex-col gap-6">
       <h1 className="text-2xl font-bold">{department} Department Teachers</h1>
-      <div className="flex flex-wrap max-md:justify-center items-stretch gap-12 max-lg:gap-8 w-full max-sm:flex-col">
+      {/* <div className="flex flex-wrap max-md:justify-center items-stretch gap-12 max-lg:gap-8 w-full max-sm:flex-col">
         {teachers.map((teacherObj) => (
           <TeacherCard
             key={teacherObj.id}
@@ -35,7 +35,7 @@ async function TeachersList({ department }: TeachersListProps) {
             department={teacherObj.department}
           />
         ))}
-      </div>
+      </div> */}
     </div>
   )
 }
@@ -48,7 +48,7 @@ interface PageProps {
 
 export default function DepartmentTeachersPage({ params }: PageProps) {
   // Validate department parameter
-  const validDepartments = ['CSE', 'ECE', 'EEE', 'MECH', 'CIVIL'] // Add your valid departments
+  const validDepartments = ['CSE', 'ECE', 'EEE', 'MECH', 'CIVIL','HSS','MTH','PHY','ME'] // Add your valid departments
   if (!validDepartments.includes(params.department)) {
     notFound()
   }

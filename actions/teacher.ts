@@ -54,47 +54,41 @@ export async function getTeacherSchedule(teacherId: string) {
   
   export async function createBooking(data: {
     teacherId: string
- 
     timeSlotId: string
- 
     reason: string
   }) {
     const session = await getServerSession(authOptions)
-    console.log("trying",session)
     if (!session || !session.user) {
-        return { error: "Unauthorized or insufficient permissions" };
-      }
-    
-      const userEmail = session.user.email;
-      const user = await prisma.user.findUnique({
-        where: { email: userEmail as string }
-      })
-      console.log(user)
+      return { error: "Unauthorized or insufficient permissions" };
+    }
   
-      if (!user) {
-        console.error("User not found in the database")
-        return
-      }
+    const userEmail = session.user.email;
+    const user = await prisma.user.findUnique({
+      where: { email: userEmail as string },
+      include: { student: true } // Include the related student
+    });
   
-  if (!user ) throw new Error("Unauthorized");
-
+    if (!user || !user.student) {
+      return { error: "Student not found" };
+    }
+  
+    const studentId = user.student.id;
+  
     try {
-        console.log("trying",data)
       const booking = await prisma.booking.create({
         data: {
           teacherId: data.teacherId,
-          studentId: "cm38u752f0002u0byrl1ivosq",
+          studentId: studentId,
           timeSlotId: data.timeSlotId,
-       
           reason: data.reason,
           status: BookingStatus.PENDING
+          
         }
-
-      })
-      return booking
+      });
+      return booking;
     } catch (error) {
-      console.error('Error creating booking:', error)
-      throw new Error('Failed to create booking')
+      console.error('Error creating booking:', error);
+      throw new Error('Failed to create booking');
     }
   }
 

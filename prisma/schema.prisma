@@ -51,20 +51,28 @@ model Teacher {
 
 model Student {
   id       String    @id @default(cuid())
+  name     String?
   rollno   String    @unique
   userId   String    @unique
   bookings Booking[]
   user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+enum SlotStatus {
+  FREE
+  BUSY
+  LECTURE
+}
+
 model TimeSlot {
-  id          String    @id @default(cuid())
+  id          String     @id @default(cuid())
   teacherId   String
   dayOfWeek   Int // 0-6 for Sunday-Saturday
   startTime   DateTime
   endTime     DateTime
-  isRecurring Boolean   @default(true)
-  teacher     Teacher   @relation(fields: [teacherId], references: [id])
+  status      SlotStatus @default(FREE)
+  isRecurring Boolean    @default(true)
+  teacher     Teacher    @relation(fields: [teacherId], references: [id])
   Booking     Booking[]
 
   @@unique([teacherId, dayOfWeek, startTime, endTime])
