@@ -56,6 +56,7 @@ export async function createHallBooking({
   reason: string
 }) {
   try {
+    console.log("adsfffffffffffff",theaterId,userId,start,end,date,reason)
     // Check if there's already a booking for this theater that overlaps with the requested time
     const existingBooking = await prisma.hallBooking.findFirst({
       where: {

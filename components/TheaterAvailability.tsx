@@ -49,6 +49,7 @@ const TheaterAvailability: FC<Props> = ({ theaterId }) => {
   // Fetch bookings for the selected date
   const fetchBookings = async (date: Date) => {
     const result = await getHallBookingsForDay(theaterId, date)
+    console.log(result)
     if (result.success) {
       setEvents(convertBookingsToEvents(result.data))
     } else {
@@ -87,7 +88,7 @@ const TheaterAvailability: FC<Props> = ({ theaterId }) => {
         date: bookingDate,
         reason
       })
-
+console.log("hallllllll",result)
       if (result.success) {
         toast.success("Booking requested")
         fetchBookings(selectedDate)
