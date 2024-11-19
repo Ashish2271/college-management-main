@@ -7,35 +7,49 @@ import Link from "next/link";
 interface ChatNotificationProps {
   notificationDetails: {
     id: string;
-    name: string;
-    image?: string;
+    student: {
+      student: {
+        name: string;
+        image?: string;
+      };
+    };
     message: string;
   };
 }
 
-export default function ChatNotification({ notificationDetails }:any) {
+export default function ChatNotification({ notificationDetails }: ChatNotificationProps) {
   const { setChatName } = useContext(ChatContext);
-console.log("woow",notificationDetails)
+
   const handleStartChat = () => {
-    setChatName(notificationDetails?.name);
+    setChatName(notificationDetails?.student?.student?.name || '');
   };
 
   return (
-    <div className="flex bg-primary text-white py-4 px-6 justify-center rounded-2xl gap-6 items-center max-sm:flex-col max-sm:px-4">
-      <div className="flex gap-4">
-        {/* <Avatar className="w-12 h-12 max-lg:w-10 max-lg:h-10">
-          {notificationDetails.image && <AvatarImage src={notificationDetails.image} />}
-          <AvatarFallback>SU</AvatarFallback>
-        </Avatar> */}
-        <div className="space-y-2">
-          <p className="text-lg font-semibold">{notificationDetails?.student.student.name}</p>
-          <p className="max-w-[600px] max-xl:max-w-[400px] max-lg:max-w-[280px] max-sm:max-w-[240px] overflow-hidden text-ellipsis whitespace-nowrap text-accent text-sm">
-            {notificationDetails?.message}
-          </p>
-        </div>
+    <div className="flex bg-primary text-white py-3 px-4 rounded-2xl gap-4 items-center w-full max-w-full">
+      {notificationDetails?.student?.student?.image && (
+        <Avatar className="w-10 h-10">
+          {/* <AvatarImage src={notificationDetails.student.student.image} alt={notificationDetails.student.student.name} /> */}
+          <AvatarFallback>{notificationDetails.student.student.name.substring(0, 2).toUpperCase()}</AvatarFallback>
+        </Avatar>
+      )}
+      
+      <div className="flex-1 min-w-0">
+        <p className="text-base font-semibold truncate">
+          {notificationDetails?.student?.student?.name}
+        </p>
+        <p className="text-accent text-sm truncate">
+          {notificationDetails?.message}
+        </p>
       </div>
-      <Link href={`/dashboard/chat/teacher/${notificationDetails?.id}`} className="w-full">
-        <Button className="bg-primary-foreground text-primary hover:bg-primary-foreground max-sm:w-full" onClick={handleStartChat}>
+      
+      <Link 
+        href={`/dashboard/chat/teacher/${notificationDetails?.id}`} 
+        className="ml-auto"
+      >
+        <Button 
+          className="bg-primary-foreground text-primary hover:bg-opacity-90 whitespace-nowrap"
+          onClick={handleStartChat}
+        >
           Start Chat
         </Button>
       </Link>

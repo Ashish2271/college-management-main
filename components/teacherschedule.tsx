@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useTransition, useState } from 'react';
+import React, { useTransition, useState, useEffect } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from '@/hooks/use-toast';
@@ -13,7 +13,8 @@ const HOURS = Array.from({ length: 9 }, (_, i) => i + 9); // 9 AM to 5 PM
 const SlotStatus = {
   FREE: 'FREE',
   BUSY: 'BUSY',
-  LECTURE: 'LECTURE'
+  LECTURE: 'LECTURE',
+  OTHER:'OTHER'
 };
 
 const getStatusColor = (status) => {
@@ -24,6 +25,8 @@ const getStatusColor = (status) => {
       return 'bg-red-100 hover:bg-red-200';
     case SlotStatus.LECTURE:
       return 'bg-blue-100 hover:bg-blue-200';
+      case SlotStatus.OTHER:
+      return 'bg-black-100 hover:bg-blue-200';
     default:
       return 'bg-gray-100 hover:bg-gray-200';
   }
@@ -87,7 +90,12 @@ const TeacherSchedule = ({ teacherId, initialSchedule = {} }) => {
     const dayKey = getScheduleKey(dayIndex);
     return schedule[dayKey]?.[hour]?.bookings || [];
   };
-
+  // useEffect(() => {
+  //   // Initialize schedule if empty
+  //   if (Object.keys(initialSchedule).length === 0) {
+  //     initializeTeacherSchedule(teacherId);
+  //   }
+  // }, [teacherId, initialSchedule]);
   return (
     <Card className="w-full max-w-6xl mx-auto">
       <CardHeader>
@@ -131,6 +139,7 @@ const TeacherSchedule = ({ teacherId, initialSchedule = {} }) => {
                             <SelectItem value={SlotStatus.FREE}>Free</SelectItem>
                             <SelectItem value={SlotStatus.BUSY}>Busy</SelectItem>
                             <SelectItem value={SlotStatus.LECTURE}>Lecture</SelectItem>
+                            <SelectItem value={SlotStatus.OTHER}>Other</SelectItem>
                           </SelectContent>
                         </Select>
                         {getSlotBookings(dayIndex, hour).map(booking => (

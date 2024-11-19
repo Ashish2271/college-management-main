@@ -174,14 +174,14 @@ export function ChatInterface({
       </form>
       
     </div>
-    <ChatP/>
+    {/* <ChatP/> */}
     </div>
     
   )
 }
 
 function MessageBubble({ message, isCurrentUser }: { message: any, isCurrentUser: boolean }) {
-  const senderName = message.sender.teacher?.username || message.sender.student?.name || message.sender.email
+  const senderName = message.sender.teacher?.username || message.sender.student?.name 
 
   return (
     <div className={`flex ${isCurrentUser ? 'justify-end' : 'justify-start'}`}>

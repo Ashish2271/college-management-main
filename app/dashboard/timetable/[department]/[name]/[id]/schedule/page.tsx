@@ -12,27 +12,32 @@ const HOURS = Array.from({ length: 9 }, (_, i) => i + 9); // 9 AM to 5 PM
 const SlotStatus = {
   FREE: 'FREE',
   BUSY: 'BUSY',
-  LECTURE: 'LECTURE'
+  LECTURE: 'LECTURE',
+  OTHER:'OTHER'
 };
 
 const getStatusColor = (status) => {
   switch (status) {
     case SlotStatus.FREE:
-      return 'bg-green-100 text-green-800';
+      return 'bg-green-100 hover:bg-green-200';
     case SlotStatus.BUSY:
-      return 'bg-red-100 text-red-800';
+      return 'bg-red-100 hover:bg-red-200';
     case SlotStatus.LECTURE:
-      return 'bg-blue-100 text-blue-800';
+      return 'bg-blue-100 hover:bg-blue-200';
+      case SlotStatus.OTHER:
+      return 'bg-black-100 hover:bg-blue-200';
     default:
-      return 'bg-gray-100 text-gray-800';
+      return 'bg-gray-100 hover:bg-gray-200';
   }
 };
+
 
 const StudentTeacherSchedule = ({ params }) => {
   const [schedule, setSchedule] = useState({});
   const [showBookingModal, setShowBookingModal] = useState(false);
   const [selectedTimeSlot, setSelectedTimeSlot] = useState(null);
 const teacherId = params.id
+const teacherName = params.name
   useEffect(() => {
     const fetchTeacherSchedule = async () => {
       try {
@@ -63,7 +68,7 @@ const teacherId = params.id
   }, [teacherId]);
 
   const handleBooking = (timeSlot) => {
-    if (timeSlot.status === SlotStatus.FREE) {
+    if (timeSlot?.status === SlotStatus.FREE) {
       setSelectedTimeSlot(timeSlot);
       setShowBookingModal(true);
     }
@@ -78,6 +83,7 @@ const teacherId = params.id
     <Card className="w-full max-w-6xl mx-auto">
       <CardHeader>
         <CardTitle>Teacher Schedule</CardTitle>
+        <CardTitle>{teacherName.replace(/%20/g, ' ')}</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="overflow-x-auto">

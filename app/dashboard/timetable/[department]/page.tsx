@@ -15,9 +15,9 @@ async function TeachersList({ department }: TeachersListProps) {
   if (teachers.length === 0) {
     return (
       <div className="text-center py-8">
-        <h2 className="text-xl font-semibold text-gray-600">
+        <h1 className="text-xl font-semibold text-gray-600">
           No teachers found in {department} department
-        </h2>
+        </h1>
       </div>
     )
   }
@@ -61,9 +61,16 @@ export default function DepartmentTeachersPage({ params }: PageProps) {
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-900"></div>
         </div>
       }>
+           {/* <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
+      <div className="w-full max-w-md space-y-6 text-center"> */}
+      <main className="p-4 max-md:pb-20 space-y-12 max-sm:space-y-6 flex justify-center pt-24">
+        <div className="flex flex-col items-center justify-center gap-12">
+        <TeachersList department={params.department} />
         <Combo department={params.department} />
         <StartButton department={params.department} />
-        <TeachersList department={params.department}/>
+      </div>
+    {/* </div> */}
+    </main>
       </Suspense>
     </main>
   )
