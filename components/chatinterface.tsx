@@ -15,6 +15,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import ChatP from './teachernoti'
 
 interface ChatInterfaceProps {
   ticketId: string
@@ -27,7 +28,7 @@ export function ChatInterface({
   ticketId,
   currentUserId,
   userRole,
-  initialStatus = 'OPEN',
+  initialStatus,
 }: ChatInterfaceProps) {
   const [messages, setMessages] = useState<any[]>([])
   const [newMessage, setNewMessage] = useState('')
@@ -74,7 +75,8 @@ export function ChatInterface({
 
   const handleCloseTicket = async () => {
     try {
-      await updateTicketStatus(ticketId, 'CLOSED')
+     const response = await updateTicketStatus(ticketId, 'CLOSED')
+     console.log("saff",response)
       setStatus('CLOSED')
     } catch (error) {
       setError('Failed to close ticket')
@@ -93,6 +95,7 @@ export function ChatInterface({
   }
 
   return (
+    <div>
     <div className="flex flex-col h-[600px] w-full max-w-2xl border rounded-lg bg-white shadow-sm">
       {/* Chat Header */}
       <div className="flex items-center justify-between p-4 border-b">
@@ -169,12 +172,16 @@ export function ChatInterface({
           </Button>
         </div>
       </form>
+      
     </div>
+    <ChatP/>
+    </div>
+    
   )
 }
 
 function MessageBubble({ message, isCurrentUser }: { message: any, isCurrentUser: boolean }) {
-  const senderName = message.sender.teacher?.username || message.sender.student?.rollno || message.sender.email
+  const senderName = message.sender.teacher?.username || message.sender.student?.email || message.sender.email
 
   return (
     <div className={`flex ${isCurrentUser ? 'justify-end' : 'justify-start'}`}>

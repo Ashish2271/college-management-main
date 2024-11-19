@@ -14,16 +14,16 @@ async function main() {
   await prisma.user.deleteMany()
 
   // Create Teachers
-  const [teacherSmith, teacherJones] = await Promise.all([
+  const teachers = await Promise.all([
     prisma.user.create({
       data: {
-        email: 'smith@university.edu',
+        email: 'varun.sharma@university.edu',
         password: await hash('password123', 12),
         role: UserRole.TEACHER,
         teacher: {
           create: {
-            username: 'prof_smith',
-            department: 'Computer Science'
+            username: 'varun_sharma',
+            department: 'CSE'
           }
         }
       },
@@ -33,13 +33,61 @@ async function main() {
     }),
     prisma.user.create({
       data: {
-        email: 'jones@university.edu',
+        email: 'vaibhav.gupta@university.edu',
         password: await hash('password123', 12),
         role: UserRole.TEACHER,
         teacher: {
           create: {
-            username: 'dr_jones',
-            department: 'Mathematics'
+            username: 'vaibhav_gupta',
+            department: 'CSE'
+          }
+        }
+      },
+      include: {
+        teacher: true
+      }
+    }),
+    prisma.user.create({
+      data: {
+        email: 'priyanka.gupta@university.edu',
+        password: await hash('password123', 12),
+        role: UserRole.TEACHER,
+        teacher: {
+          create: {
+            username: 'priyanka_gupta',
+            department: 'CSE'
+          }
+        }
+      },
+      include: {
+        teacher: true
+      }
+    }),
+    prisma.user.create({
+      data: {
+        email: 'manish.garg@university.edu',
+        password: await hash('password123', 12),
+        role: UserRole.TEACHER,
+        teacher: {
+          create: {
+            username: 'manish_garg',
+            department: 'CSE'
+          }
+        }
+      },
+      include: {
+        teacher: true
+      }
+    }),
+    prisma.user.create({
+      data: {
+        email: 'harsh.trivedi@university.edu',
+        password: await hash('password123', 12),
+        role: UserRole.TEACHER,
+        teacher: {
+          create: {
+            username: 'harsh_trivedi',
+            department: 'CSE'
           }
         }
       },
@@ -50,15 +98,15 @@ async function main() {
   ])
 
   // Create Students
-  const [studentJohn, studentJane] = await Promise.all([
+  const students = await Promise.all([
     prisma.user.create({
       data: {
-        email: 'john.doe@university.edu',
+        email: 'keshav@university.edu',
         password: await hash('password123', 12),
         role: UserRole.STUDENT,
         student: {
           create: {
-            rollno: 'CS2024001'
+            rollno: 'CSE2024001'
           }
         }
       },
@@ -68,12 +116,42 @@ async function main() {
     }),
     prisma.user.create({
       data: {
-        email: 'jane.smith@university.edu',
+        email: 'shyam@university.edu',
         password: await hash('password123', 12),
         role: UserRole.STUDENT,
         student: {
           create: {
-            rollno: 'CS2024002'
+            rollno: 'CSE2024002'
+          }
+        }
+      },
+      include: {
+        student: true
+      }
+    }),
+    prisma.user.create({
+      data: {
+        email: 'pranvi@university.edu',
+        password: await hash('password123', 12),
+        role: UserRole.STUDENT,
+        student: {
+          create: {
+            rollno: 'CSE2024003'
+          }
+        }
+      },
+      include: {
+        student: true
+      }
+    }),
+    prisma.user.create({
+      data: {
+        email: 'ayush@university.edu',
+        password: await hash('password123', 12),
+        role: UserRole.STUDENT,
+        student: {
+          create: {
+            rollno: 'CSE2024004'
           }
         }
       },
@@ -87,68 +165,61 @@ async function main() {
   const now = new Date()
   const nextWeek = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000)
 
-  const timeSlots = await Promise.all([
-    prisma.timeSlot.create({
-      data: {
-        teacherId: teacherSmith.teacher!.id,
-        dayOfWeek: 1, // Monday
-        startTime: new Date(now.setHours(10, 0, 0, 0)),
-        endTime: new Date(now.setHours(11, 0, 0, 0)),
-        isRecurring: true
-      }
-    }),
-    prisma.timeSlot.create({
-      data: {
-        teacherId: teacherSmith.teacher!.id,
-        dayOfWeek: 3, // Wednesday
-        startTime: new Date(now.setHours(14, 0, 0, 0)),
-        endTime: new Date(now.setHours(15, 0, 0, 0)),
-        isRecurring: true
-      }
-    }),
-    prisma.timeSlot.create({
-      data: {
-        teacherId: teacherJones.teacher!.id,
-        dayOfWeek: 2, // Tuesday
-        startTime: new Date(now.setHours(13, 0, 0, 0)),
-        endTime: new Date(now.setHours(14, 0, 0, 0)),
-        isRecurring: true
-      }
-    })
-  ])
+  // Create time slots for all teachers
+  const timeSlots = await Promise.all(
+    teachers.flatMap(teacher => [
+      prisma.timeSlot.create({
+        data: {
+          teacherId: teacher.teacher.id,
+          dayOfWeek: 1, // Monday
+          startTime: new Date(now.setHours(10, 0, 0, 0)),
+          endTime: new Date(now.setHours(11, 0, 0, 0)),
+          isRecurring: true
+        }
+      }),
+      prisma.timeSlot.create({
+        data: {
+          teacherId: teacher.teacher.id,
+          dayOfWeek: 3, // Wednesday
+          startTime: new Date(now.setHours(14, 0, 0, 0)),
+          endTime: new Date(now.setHours(15, 0, 0, 0)),
+          isRecurring: true
+        }
+      })
+    ])
+  )
 
-  // Create Bookings
+  // Create some sample bookings
   await Promise.all([
     prisma.booking.create({
       data: {
-        teacherId: teacherSmith.teacher!.id,
-        studentId: studentJohn.student!.id,
+        teacherId: teachers[0].teacher.id,
+        studentId: students[0].student.id,
         timeSlotId: timeSlots[0].id,
         date: nextWeek,
         status: BookingStatus.APPROVED,
-        reason: 'Discussion about final project',
+        reason: 'Discussion about project implementation',
         notes: 'Approved. Please bring your project documentation.'
       }
     }),
     prisma.booking.create({
       data: {
-        teacherId: teacherJones.teacher!.id,
-        studentId: studentJane.student!.id,
+        teacherId: teachers[1].teacher.id,
+        studentId: students[1].student.id,
         timeSlotId: timeSlots[2].id,
         date: nextWeek,
         status: BookingStatus.PENDING,
-        reason: 'Need help with calculus homework'
+        reason: 'Need help with data structures assignment'
       }
     }),
     prisma.booking.create({
       data: {
-        teacherId: teacherSmith.teacher!.id,
-        studentId: studentJane.student!.id,
-        timeSlotId: timeSlots[1].id,
+        teacherId: teachers[2].teacher.id,
+        studentId: students[2].student.id,
+        timeSlotId: timeSlots[4].id,
         date: nextWeek,
-        status: BookingStatus.REJECTED,
-        reason: 'Discuss internship opportunities',
-        notes: 'Please book a slot next week as I will be attending a conference.'
+        status: BookingStatus.PENDING,
+        reason: 'Discuss research opportunities'
       }
     })
   ])

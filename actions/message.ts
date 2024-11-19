@@ -200,6 +200,7 @@ export async function sendMessage(
         }
       }
     });
+    console.log("done ",message)
     return message;
   } catch (error) {
     console.error('Error sending message:', error);
@@ -257,6 +258,7 @@ const teacherId= session?.user?.id
             email: true,
             student: {
               select: {
+              
                 rollno: true
               }
             }
@@ -290,5 +292,19 @@ const teacherId= session?.user?.id
   } catch (error) {
     console.error('Error fetching teacher tickets:', error);
     throw new Error('Failed to fetch teacher tickets');
+  }
+}
+
+
+export async function getTicketStatus(ticketId: string) {
+  try {
+    const ticket = await prisma.chatTicket.findUnique({
+      where: { id: ticketId },
+      select: { status: true }
+    });
+    return ticket?.status;
+  } catch (error) {
+    console.error("Error fetching ticket status:", error);
+    throw new Error("Failed to fetch ticket status");
   }
 }
