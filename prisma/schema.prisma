@@ -80,19 +80,23 @@ model TimeSlot {
 }
 
 model Booking {
-  id         String        @id @default(cuid())
-  teacherId  String
-  studentId  String
-  timeSlotId String
-  date       DateTime?
-  status     BookingStatus @default(PENDING)
-  reason     String
-  notes      String? // For teacher's response
-  createdAt  DateTime      @default(now())
-  updatedAt  DateTime      @updatedAt
-  teacher    Teacher       @relation(fields: [teacherId], references: [id])
-  student    Student       @relation(fields: [studentId], references: [id])
-  timeSlot   TimeSlot      @relation(fields: [timeSlotId], references: [id])
+  id           String        @id @default(cuid())
+  teacherId    String
+  studentId    String
+  timeSlotId   String
+  date         DateTime?
+  status       BookingStatus @default(PENDING)
+  reason       String
+  notes        String?
+  requestedStartTime DateTime?  // New field for student's requested start time
+  requestedEndTime   DateTime?  // New field for student's requested end time
+  approvedStartTime  DateTime? // New field for teacher's approved start time
+  approvedEndTime    DateTime? // New field for teacher's approved end time
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  teacher      Teacher       @relation(fields: [teacherId], references: [id])
+  student      Student       @relation(fields: [studentId], references: [id])
+  timeSlot     TimeSlot      @relation(fields: [timeSlotId], references: [id])
 }
 
 model hallBooking {
