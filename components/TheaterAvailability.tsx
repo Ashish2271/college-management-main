@@ -49,7 +49,6 @@ const TheaterAvailability: FC<Props> = ({ theaterId }) => {
   // Fetch bookings for the selected date
   const fetchBookings = async (date: Date) => {
     const result = await getHallBookingsForDay(theaterId, date)
-    console.log("bruuuuuu",result)
     if (result.success) {
       setEvents(convertBookingsToEvents(result.data))
     } else {
@@ -71,9 +70,9 @@ const TheaterAvailability: FC<Props> = ({ theaterId }) => {
     const startHour = start.getHours()
     const endHour = end.getHours()
 
-    // Validate business hours (9 AM to 5 PM)
-    if (startHour < 9 || endHour > 17) {
-      toast.error("Bookings are only available between 9 AM and 5 PM")
+    // Validate booking hours (5 PM to 11 PM)
+    if (startHour < 17 || endHour > 23) {
+      toast.error("Bookings are only available between 5 PM and 11 PM")
       return
     }
 
@@ -88,7 +87,7 @@ const TheaterAvailability: FC<Props> = ({ theaterId }) => {
         date: bookingDate,
         reason
       })
-console.log("hallllllll",result)
+
       if (result.success) {
         toast.success("Booking requested")
         fetchBookings(selectedDate)
@@ -114,8 +113,8 @@ console.log("hallllllll",result)
   }
 
   // Set the time boundaries for the calendar
-  const minTime = setHours(setMinutes(new Date(), 0), 9) // 9 AM
-  const maxTime = setHours(setMinutes(new Date(), 0), 17) // 5 PM
+  const minTime = setHours(setMinutes(new Date(), 0), 17) // 5 PM
+  const maxTime = setHours(setMinutes(new Date(), 0), 23) // 11 PM
 
   return (
     <main className='overflow-x-auto p-4 max-sm:pb-20'>
