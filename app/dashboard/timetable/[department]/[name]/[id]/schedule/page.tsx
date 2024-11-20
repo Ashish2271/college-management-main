@@ -78,14 +78,15 @@ const teacherName = params.name
     setShowBookingModal(false);
     setSelectedTimeSlot(null);
   };
-  const TeacherTitle = ({ teacherName }) => {
+ 
   const capitalizeWords = (str) => {
     return str
       .replace(/%20/g, ' ')
       .split(' ')
       .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
       .join(' ');
-  };
+  }
+
 
 
   return (
