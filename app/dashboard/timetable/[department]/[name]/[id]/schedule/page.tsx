@@ -78,12 +78,21 @@ const teacherName = params.name
     setShowBookingModal(false);
     setSelectedTimeSlot(null);
   };
+  const TeacherTitle = ({ teacherName }) => {
+  const capitalizeWords = (str) => {
+    return str
+      .replace(/%20/g, ' ')
+      .split(' ')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(' ');
+  };
+
 
   return (
     <Card className="w-full max-w-6xl mx-auto">
       <CardHeader>
         <CardTitle>Teacher Schedule</CardTitle>
-        <CardTitle>{teacherName.replace(/%20/g, ' ')}</CardTitle>
+         <CardTitle>{capitalizeWords(teacherName)}</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="overflow-x-auto">
