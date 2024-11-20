@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Calendar } from 'lucide-react';
-import { updateTeacherSlot } from '@/actions/timetable';
+import { getTeacherSchedule, updateTeacherSlot } from '@/actions/timetable';
 import { toast } from '@/hooks/use-toast';
 
 const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -33,8 +33,8 @@ const getStatusColor = (status) => {
 };
 
 const TeacherSchedule = ({ teacherId, initialSchedule = {} }) => {
-  console.log("initials",initialSchedule)
-  const [schedule, setSchedule] = useState(initialSchedule);
+
+  const [schedule, setSchedule] = useState({});
   const [isPending, setIsPending] = useState(false);
 
   const handleUpdateSlot = async (dayIndex, hour, newStatus) => {
@@ -76,7 +76,34 @@ const TeacherSchedule = ({ teacherId, initialSchedule = {} }) => {
       setIsPending(false);
     }
   };
+  useEffect(() => {
+    const fetchTeacherSchedule = async () => {
+      try {
+        const timeSlots = await getTeacherSchedule(teacherId);
+        console.log(timeSlots)
+        // Transform schedule into a structured format
+        const formattedSchedule = timeSlots.reduce((acc, slot) => {
+          if (!acc[slot.dayOfWeek]) {
+            acc[slot.dayOfWeek] = {};
+          }
+          
+          const hour = new Date(slot.startTime).getHours();
+          acc[slot.dayOfWeek][hour] = {
+            ...slot,
+            status: slot.status
+          };
+          
+          return acc;
+        }, {});
+console.log("weooooo",formattedSchedule)
+        setSchedule(formattedSchedule);
+      } catch (error) {
+        console.error('Error fetching teacher schedule:', error);
+      }
+    };
 
+    fetchTeacherSchedule();
+  }, [teacherId]);
   const getSlotStatus = (dayIndex, hour) => {
     return schedule[dayIndex]?.[hour]?.status || SlotStatus.FREE;
   };

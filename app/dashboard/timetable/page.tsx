@@ -60,7 +60,7 @@ export default async function Dashboard() {
         bookings: slot.Booking
       };
 
-  console.log('hwww',formattedSchedule)
+
       
       return acc;
 
