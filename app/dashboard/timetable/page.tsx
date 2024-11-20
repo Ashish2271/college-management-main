@@ -38,14 +38,17 @@ export default async function Dashboard() {
 
   if (user.role === "TEACHER") {
     const teacher = await getTeacherData(user.id);
-    const schedule = await getTeacherSchedule(teacher.id);
+    const timeSlots = await getTeacherSchedule(teacher.id);
     
-    console.log("Fetched Schedule:", JSON.stringify(schedule, null, 2));
+    console.log("Fetched Schedule:", JSON.stringify(timeSlots, null, 2));
     
     if (!teacher) {
       return <div>Teacher profile not found</div>;
     }
-    const formattedSchedule = schedule.reduce((acc, slot) => {
+   
+    console.log(timeSlots)
+    // Transform schedule into a structured format
+    const formattedSchedule = timeSlots.reduce((acc, slot) => {
       if (!acc[slot.dayOfWeek]) {
         acc[slot.dayOfWeek] = {};
       }
@@ -56,6 +59,8 @@ export default async function Dashboard() {
         status: slot.status,
         bookings: slot.Booking
       };
+
+  
       
       return acc;
 
