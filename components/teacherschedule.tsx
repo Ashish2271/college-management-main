@@ -33,6 +33,7 @@ const getStatusColor = (status) => {
 };
 
 const TeacherSchedule = ({ teacherId, initialSchedule = {} }) => {
+  console.log("initials",initialSchedule)
   const [schedule, setSchedule] = useState(initialSchedule);
   const [isPending, setIsPending] = useState(false);
 
