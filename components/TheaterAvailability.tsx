@@ -2,7 +2,7 @@
 
 import { FC, useState, useEffect } from 'react'
 import { Calendar, dateFnsLocalizer, Event, View, SlotInfo } from 'react-big-calendar'
-import withDragAndDrop, { withDragAndDropProps } from 'react-big-calendar/lib/addons/dragAndDrop'
+import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop'
 import {format} from 'date-fns/format'
 import {parse} from 'date-fns/parse'
 import {startOfWeek} from 'date-fns/startOfWeek'
@@ -70,7 +70,7 @@ const TheaterAvailability: FC<Props> = ({ theaterId }) => {
     const startHour = start.getHours()
     const endHour = end.getHours()
 
-    // Validate booking hours (5 PM to 11 PM)
+    // Validate booking hours (only after 5 PM and before midnight)
     if (startHour < 17 || endHour > 23) {
       toast.error("Bookings are only available between 5 PM and 11 PM")
       return
@@ -91,6 +91,8 @@ const TheaterAvailability: FC<Props> = ({ theaterId }) => {
       if (result.success) {
         toast.success("Booking requested")
         fetchBookings(selectedDate)
+        setIsBookingDialogOpen(false)
+        setSelectedSlot(null)
       } else {
         toast.error(result.error || "Failed to create booking")
       }
@@ -105,15 +107,36 @@ const TheaterAvailability: FC<Props> = ({ theaterId }) => {
       return
     }
 
+    const start = new Date(slotInfo.start)
+    const startHour = start.getHours()
+
+    // Prevent booking during 9-5 work hours
+    if (startHour >= 9 && startHour < 17) {
+      toast.error("Bookings are not available between 9 AM and 5 PM")
+      return
+    }  
+    if (startHour >= 23 && startHour < 24) {
+      toast.error("Bookings are not available between 9 AM and 5 PM")
+      return
+    }
+    if (startHour >= 0 && startHour < 9) {
+      toast.error("Bookings are not available between 9 AM and 5 PM")
+      return
+    }
+
+    // Adjust slot selection to full hours
+    const end = new Date(start)
+    end.setHours(start.getHours() + 1)
+
     setSelectedSlot({
-      start: new Date(slotInfo.start),
-      end: new Date(slotInfo.end)
+      start: start,
+      end: end
     })
     setIsBookingDialogOpen(true)
   }
 
   // Set the time boundaries for the calendar
-  const minTime = setHours(setMinutes(new Date(), 0), 17) // 5 PM
+  const minTime = setHours(setMinutes(new Date(), 0), 9) // 5 AM 
   const maxTime = setHours(setMinutes(new Date(), 0), 23) // 11 PM
 
   return (
@@ -129,6 +152,8 @@ const TheaterAvailability: FC<Props> = ({ theaterId }) => {
           min={minTime}
           max={maxTime}
           selectable
+          timeslots={1} // Set to 1 timeslot per hour
+          step={60} // Set step to 60 minutes
           onSelectSlot={handleSelectSlot}
           onNavigate={(date: Date) => setSelectedDate(date)}
           eventPropGetter={(event: CalendarEvent) => ({
