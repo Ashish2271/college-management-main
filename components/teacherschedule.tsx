@@ -1,11 +1,11 @@
-'use client';
+'use client'
 
-import React, { useTransition, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { toast } from '@/hooks/use-toast';
 import { Calendar } from 'lucide-react';
-import { initializeTeacherSchedule, updateTeacherSlot } from '@/actions/timetable';
+import { updateTeacherSlot } from '@/actions/timetable';
+import { toast } from '@/hooks/use-toast';
 
 const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 const HOURS = Array.from({ length: 9 }, (_, i) => i + 9); // 9 AM to 5 PM
@@ -14,7 +14,7 @@ const SlotStatus = {
   FREE: 'FREE',
   BUSY: 'BUSY',
   LECTURE: 'LECTURE',
-  OTHER:'OTHER'
+  OTHER: 'OTHER'
 };
 
 const getStatusColor = (status) => {
@@ -25,77 +25,65 @@ const getStatusColor = (status) => {
       return 'bg-red-100 hover:bg-red-200';
     case SlotStatus.LECTURE:
       return 'bg-blue-100 hover:bg-blue-200';
-      case SlotStatus.OTHER:
-      return 'bg-black-100 hover:bg-blue-200';
+    case SlotStatus.OTHER:
+      return 'bg-gray-100 hover:bg-gray-200';
     default:
       return 'bg-gray-100 hover:bg-gray-200';
   }
 };
 
 const TeacherSchedule = ({ teacherId, initialSchedule = {} }) => {
-  console.log("weo",initialSchedule)
   const [schedule, setSchedule] = useState(initialSchedule);
-  const [isPending, startTransition] = useTransition();
+  const [isPending, setIsPending] = useState(false);
 
-  const getScheduleKey = (dayIndex) => `${dayIndex}`;
-
-  const handleUpdateSlot = (dayIndex, hour, newStatus) => {
-    startTransition(async () => {
-      try {
-        // Optimistically update the UI
-        setSchedule(prevSchedule => {
-          const dayKey = getScheduleKey(dayIndex);
-          return {
-            ...prevSchedule,
-            [dayKey]: {
-              ...prevSchedule[dayKey],
-              [hour]: {
-                ...prevSchedule[dayKey]?.[hour],
-                status: newStatus
-              }
-            }
-          };
-        });
-
-        // Update in database
-        await updateTeacherSlot(teacherId, {
-          dayOfWeek: dayIndex,
-          hour,
-          status: newStatus
-        });
-
-        toast({
-          title: "Success",
-          description: "Schedule updated successfully"
-        });
-      } catch (error) {
-        // Revert the optimistic update on error
-        setSchedule(initialSchedule);
-        
-        toast({
-          title: "Error",
-          description: "Failed to update schedule",
-          variant: "destructive"
-        });
+  const handleUpdateSlot = async (dayIndex, hour, newStatus) => {
+    setIsPending(true);
+    try {
+      // Optimistically update the UI
+      const updatedSchedule = { ...schedule };
+      if (!updatedSchedule[dayIndex]) {
+        updatedSchedule[dayIndex] = {};
       }
-    });
+      updatedSchedule[dayIndex][hour] = {
+        ...updatedSchedule[dayIndex][hour],
+        status: newStatus
+      };
+      
+      setSchedule(updatedSchedule);
+
+      // Update in database
+      await updateTeacherSlot(teacherId, {
+        dayOfWeek: dayIndex,
+        hour,
+        status: newStatus
+      });
+
+      toast({
+        title: "Success",
+        description: "Schedule updated successfully"
+      });
+    } catch (error) {
+      // Revert the optimistic update on error
+      setSchedule(initialSchedule);
+      
+      toast({
+        title: "Error",
+        description: "Failed to update schedule",
+        variant: "destructive"
+      });
+    } finally {
+      setIsPending(false);
+    }
   };
 
   const getSlotStatus = (dayIndex, hour) => {
-    const dayKey = getScheduleKey(dayIndex);
-    return schedule[dayKey]?.[hour]?.status || SlotStatus.FREE;
+    return schedule[dayIndex]?.[hour]?.status || SlotStatus.FREE;
   };
 
   const getSlotBookings = (dayIndex, hour) => {
-    const dayKey = getScheduleKey(dayIndex);
-    return schedule[dayKey]?.[hour]?.bookings || [];
+    return schedule[dayIndex]?.[hour]?.bookings || [];
   };
-  // useEffect(() => {
-  //   // Initialize schedule if empty
-  //   if (Object.keys(initialSchedule).length === 0) {
-  //     initializeTeacherSchedule(teacherId);
-  //   }
-  // }, [teacherId, initialSchedule]);
+
   return (
     <Card className="w-full max-w-6xl mx-auto">
       <CardHeader>

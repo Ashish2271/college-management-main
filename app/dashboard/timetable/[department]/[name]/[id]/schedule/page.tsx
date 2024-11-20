@@ -57,7 +57,7 @@ const teacherName = params.name
           
           return acc;
         }, {});
-
+console.log("weooooo",formattedSchedule)
         setSchedule(formattedSchedule);
       } catch (error) {
         console.error('Error fetching teacher schedule:', error);
@@ -127,7 +127,8 @@ const teacherName = params.name
                           {timeSlot?.Booking && timeSlot.Booking.length > 0 && (
                             <div className="text-xs mt-1">
                               {/* Booked: {timeSlot.Booking.length} */}
-                              {timeSlot.Booking[0].student.name}
+
+                              {timeSlot?.status != SlotStatus.FREE && timeSlot.Booking[0].student.name}
                             </div>
                           )}
                         </div>

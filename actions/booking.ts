@@ -133,7 +133,14 @@ export async function approveBooking(bookingId: string, approvedTimes: {
         approvedEndTime: new Date(approvedTimes.endTime)
       }
     })
-
+    await prisma.timeSlot.update({
+      where: { 
+        id: booking.timeSlotId 
+      },
+      data: { 
+        status: 'BUSY' 
+      }
+    })
     revalidatePath('/teacher/bookings')
     revalidatePath('/student/bookings')
     return booking

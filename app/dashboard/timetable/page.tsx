@@ -52,11 +52,14 @@ export default async function Dashboard() {
       
       const hour = new Date(slot.startTime).getHours();
       acc[slot.dayOfWeek][hour] = {
+        ...slot,
         status: slot.status,
         bookings: slot.Booking
       };
       
       return acc;
+
+      
     }, {});
   
     return (

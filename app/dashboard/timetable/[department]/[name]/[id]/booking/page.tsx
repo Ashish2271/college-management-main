@@ -44,6 +44,7 @@ export default function TeacherBookingRequests({ params }: { params: { id: strin
       startTime: startDate.toISOString(),
       endTime: endDate.toISOString()
     })
+    console.log(result)
     //@ts-ignore
 
     if (!result.error) {
