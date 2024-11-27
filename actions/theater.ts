@@ -23,7 +23,7 @@ const  wherebookings = await prisma.hallBooking.findMany({
     }
   },
 })
-console.log("17",allbookings)
+console.log("17",wherebookings)
     const bookings = await prisma.hallBooking.findMany({
       where: {
         theaterId: theaterId,
