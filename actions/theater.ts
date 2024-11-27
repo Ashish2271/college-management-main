@@ -12,7 +12,18 @@ export async function getHallBookingsForDay(theaterId: string, date: Date) {
     
     const endOfDay = new Date(date)
     endOfDay.setHours(23, 59, 59, 999)
-
+const  allbookings = await prisma.hallBooking.findMany()
+console.log("16",allbookings)
+const  wherebookings = await prisma.hallBooking.findMany({
+  where: {
+    theaterId: theaterId,
+    date: {
+      gte: startOfDay,
+      lte: endOfDay
+    }
+  },
+})
+console.log("17",allbookings)
     const bookings = await prisma.hallBooking.findMany({
       where: {
         theaterId: theaterId,

@@ -104,6 +104,7 @@ console.log(result)
   }
 
   const handleSelectSlot = (slotInfo: SlotInfo) => {
+    console.log("helllo")
     if (!session?.user?.id) {
       toast.error("Please sign in to make bookings")
       return
@@ -114,14 +115,19 @@ console.log(result)
 
     // Prevent booking during 9-5 work hours
     if (startHour >= 9 && startHour < 17) {
+      console.log("helllo")
       toast.error("Bookings are not available between 9 AM and 5 PM")
       return
     }  
     if (startHour >= 23 && startHour < 24) {
+      console.log("helllo")
+
       toast.error("Bookings are not available between 9 AM and 5 PM")
       return
     }
     if (startHour >= 0 && startHour < 9) {
+      console.log("helllo")
+
       toast.error("Bookings are not available between 9 AM and 5 PM")
       return
     }
