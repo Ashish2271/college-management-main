@@ -87,7 +87,7 @@ const TheaterAvailability: FC<Props> = ({ theaterId }) => {
         date: bookingDate,
         reason
       })
-
+console.log(result)
       if (result.success) {
         toast.success("Booking requested")
         fetchBookings(selectedDate)
