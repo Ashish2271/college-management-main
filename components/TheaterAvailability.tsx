@@ -48,6 +48,7 @@ const TheaterAvailability: FC<Props> = ({ theaterId }) => {
 
   // Fetch bookings for the selected date
   const fetchBookings = async (date: Date) => {
+    console.log("date",date)
     const result = await getHallBookingsForDay(theaterId, date)
     console.log('hekle',result)
     if (result.success) {
