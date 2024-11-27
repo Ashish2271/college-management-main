@@ -58,7 +58,8 @@ export async function createHallBooking({
   start,
   end,
   date,
-  reason
+  reason,
+  selectedSlot
 }: {
   theaterId: string
   userId: string
@@ -66,14 +67,17 @@ export async function createHallBooking({
   end: number      // Added end time (e.g., 10 for 10:00)
   date: Date
   reason: string
+  selectedSlot?:any
 }) {
   try {
+    console.log("h",selectedSlot)
+    const wow = selectedSlot.start
     console.log("adsfffffffffffff",theaterId,userId,start,end,date,reason)
     // Check if there's already a booking for this theater that overlaps with the requested time
     const existingBooking = await prisma.hallBooking.findFirst({
       where: {
         theaterId: theaterId,
-        date: date,
+        date: selectedSlot.start,
         status: {
           not: BookingStatus.REJECTED
         },
@@ -111,7 +115,7 @@ console.log('we')
         userId,
         start,
         end,
-        date,
+        date:wow, 
         reason,
         status: BookingStatus.PENDING
       }

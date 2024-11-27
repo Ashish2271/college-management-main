@@ -72,11 +72,7 @@ const TheaterAvailability: FC<Props> = ({ theaterId }) => {
     const startHour = start.getHours()
     const endHour = end.getHours()
 
-    // Validate booking hours (only after 5 PM and before midnight)
-    if (startHour < 17 || endHour > 23) {
-      toast.error("Bookings are only available between 5 PM and 11 PM")
-      return
-    }
+
 
     try {
       const bookingDate = startOfDay(start)
@@ -87,7 +83,8 @@ const TheaterAvailability: FC<Props> = ({ theaterId }) => {
         start: startHour,
         end: endHour,
         date: bookingDate,
-        reason
+        reason,
+        selectedSlot,
       })
 console.log(result)
       if (result.success) {
@@ -111,27 +108,10 @@ console.log(result)
     }
 
     const start = new Date(slotInfo.start)
-    const startHour = start.getHours()
+ 
 
-    // Prevent booking during 9-5 work hours
-    if (startHour >= 9 && startHour < 17) {
-      console.log("helllo")
-      toast.error("Bookings are not available between 9 AM and 5 PM")
-      return
-    }  
-    if (startHour >= 23 && startHour < 24) {
-      console.log("helllo")
-
-      toast.error("Bookings are not available between 9 AM and 5 PM")
-      return
-    }
-    if (startHour >= 0 && startHour < 9) {
-      console.log("helllo")
-
-      toast.error("Bookings are not available between 9 AM and 5 PM")
-      return
-    }
-
+  
+    
     // Adjust slot selection to full hours
     const end = new Date(start)
     end.setHours(start.getHours() + 1)
@@ -144,7 +124,7 @@ console.log(result)
   }
 
   // Set the time boundaries for the calendar
-  const minTime = setHours(setMinutes(new Date(), 0), 9) // 5 AM 
+  const minTime = setHours(setMinutes(new Date(), 0), 17) // 5 AM 
   const maxTime = setHours(setMinutes(new Date(), 0), 23) // 11 PM
 
   return (
