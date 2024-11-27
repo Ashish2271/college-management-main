@@ -14,6 +14,7 @@ export async function getHallBookingsForDay(theaterId: string, date: Date) {
     endOfDay.setHours(23, 59, 59, 999)
 const  allbookings = await prisma.hallBooking.findMany()
 console.log("16",allbookings)
+console.log("18",theaterId,startOfDay,endOfDay)
 const  wherebookings = await prisma.hallBooking.findMany({
   where: {
     theaterId: theaterId,
@@ -23,7 +24,7 @@ const  wherebookings = await prisma.hallBooking.findMany({
     }
   },
 })
-console.log("17",wherebookings)
+console.log(theaterId,"17",wherebookings)
     const bookings = await prisma.hallBooking.findMany({
       where: {
         theaterId: theaterId,
